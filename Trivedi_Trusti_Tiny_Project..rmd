@@ -1,0 +1,187 @@
+---
+author: "Trivedi Trusti \\| Enrollment No.: 2505101270275"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float: true
+title: Student Performance Analysis Using R
+---
+
+`{r setup, include=FALSE} knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)`
+
+# 1. Introduction
+
+This Tiny Project analyzes student academic performance using R. The
+project follows the data-analysis workflow demonstrated in Practicals 8,
+9 and 10: importing a CSV database, inspecting and cleaning the data,
+calculating statistical measures, creating plots, and interpreting the
+results.
+
+**Student:** Trivedi Trusti **Enrollment Number:** 2505101270275
+
+# 2. Objectives
+
+-   Import student data from a CSV file.
+-   Inspect the structure and summary of the dataset.
+-   Check for missing values.
+-   Calculate median, variance and standard deviation of marks.
+-   Analyze gender and result distributions.
+-   Create pie charts and bar plots.
+-   Measure the correlation between attendance and marks.
+-   Interpret the results and present findings.
+
+# 3. Database / Data Importing
+
+The dataset is stored in the accompanying CSV file
+`Trivedi_Trusti_Student_Performance.csv`.
+
+`{r import} student_data <- read.csv("Trivedi_Trusti_Student_Performance.csv") student_data`
+
+The `read.csv()` function imports the CSV file into R as a data frame.
+The `student_data` object is then used for all subsequent analysis.
+
+# 4. Initial Data Inspection
+
+`{r head} head(student_data)`
+
+`head()` displays the first six observations, allowing us to quickly
+verify that the data has been imported correctly.
+
+`{r summary} summary(student_data)`
+
+`summary()` provides descriptive information for the variables,
+including minimum, maximum, median and quartiles for numeric variables.
+
+`{r structure} str(student_data)`
+
+`str()` displays the structure of the data frame and the data type of
+each variable.
+
+# 5. Data Preprocessing and Cleaning
+
+## Checking Missing Values
+
+`{r missing} colSums(is.na(student_data))`
+
+`is.na()` identifies missing values and `colSums()` counts them column
+by column. The dataset contains no missing values, so no imputation is
+required.
+
+## Checking Duplicate Records
+
+`{r duplicates} sum(duplicated(student_data))`
+
+`duplicated()` identifies duplicate rows. The result is zero, indicating
+that the dataset contains no duplicate records.
+
+# 6. Statistical Exploration
+
+`{r statistics} median(student_data$Marks) var(student_data$Marks) sd(student_data$Marks)`
+
+The `median()` function gives the middle mark, `var()` calculates the
+variance, and `sd()` calculates the standard deviation.
+
+For this dataset:
+
+-   **Mean marks:** 73.10
+-   **Median marks:** 74.50
+-   **Variance:** 209.46
+-   **Standard deviation:** 14.47
+
+The mean and median are close, indicating that the marks are reasonably
+balanced without an extreme effect from outliers. The standard deviation
+shows the amount of variation in students' marks.
+
+# 7. Gender Distribution
+
+`{r gender-count} gender_count <- table(student_data$Gender) gender_count`
+
+`table()` counts the observations belonging to each gender category.
+
+`{r gender-pie} pie(   gender_count,   main = "Gender Distribution",   labels = paste(names(gender_count), gender_count) )`
+
+The pie chart visually represents the number of male and female students
+in the dataset.
+
+**Interpretation:** The dataset contains 10 male and 10 female students.
+The two groups are equally represented.
+
+# 8. Student Result Distribution
+
+`{r result-count} result_count <- table(student_data$Result) result_count`
+
+The `Result` variable is already classified as Pass or Fail according to
+the project rule that a mark of 40 or above is a pass.
+
+`{r result-pie} pie(   result_count,   main = "Student Result Distribution",   labels = paste(names(result_count), result_count) )`
+
+**Interpretation:** 20 out of 20 students passed and 0 students failed.
+Therefore, the pass rate is 100.0%.
+
+# 9. Student Marks Bar Plot
+
+`{r marks-bar} barplot(   student_data$Marks,   names.arg = student_data$Name,   main = "Student Marks",   xlab = "Students",   ylab = "Marks",   las = 2 )`
+
+The bar plot compares the marks of individual students. Higher bars
+represent higher marks.
+
+**Interpretation:** The highest mark is 94 and the lowest mark is 45.
+This shows a noticeable range in academic performance.
+
+# 10. Student Attendance Bar Plot
+
+`{r attendance-bar} barplot(   student_data$Attendance,   names.arg = student_data$Name,   main = "Student Attendance",   xlab = "Students",   ylab = "Attendance (%)",   las = 2 )`
+
+The plot compares attendance percentages across students.
+
+**Interpretation:** Attendance ranges from 58% to 96%. Students with
+higher attendance can be compared with their marks to explore whether
+attendance is associated with performance.
+
+# 11. Correlation Between Attendance and Marks
+
+`{r correlation} cor(   student_data$Attendance,   student_data$Marks )`
+
+The `cor()` function calculates Pearson's correlation coefficient
+between attendance and marks.
+
+The calculated correlation is **0.990**.
+
+`{r scatter} plot(   student_data$Attendance,   student_data$Marks,   main = "Attendance vs Marks",   xlab = "Attendance (%)",   ylab = "Marks",   pch = 19 )`
+
+**Interpretation:** The correlation of **0.990** indicates a strong
+positive relationship in this sample: students with higher attendance
+generally tend to have higher marks. Correlation indicates association,
+not proof that attendance alone causes higher marks.
+
+# 12. Findings
+
+1.  The dataset contains **20 students** with no missing or duplicate
+    records.
+2.  The average mark is **73.10**, while the median is **74.50**.
+3.  The standard deviation of marks is **14.47**, showing moderate
+    variation in performance.
+4.  The class has **20 pass** and **0 fail** results, giving a **100.0%
+    pass rate**.
+5.  Male and female students are equally represented in the sample.
+6.  Attendance and marks have a correlation of **0.990**, showing a
+    strong positive association in this dataset.
+
+# 13. Conclusion
+
+This Tiny Project demonstrated a complete student-performance
+data-analysis workflow in R. The CSV database was imported and
+inspected, missing and duplicate records were checked, and descriptive
+statistics were calculated. Pie charts, bar plots and a scatter plot
+were used to visualize the data.
+
+The analysis shows that academic performance varies among students and
+that attendance is positively associated with marks in this sample. The
+project demonstrates how R can be used to convert raw student records
+into useful statistical information and visual insights.
+
+# 14. Complete Dataset
+
+`{r final-data} student_data`
